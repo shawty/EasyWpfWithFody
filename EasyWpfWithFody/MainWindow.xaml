@@ -1,0 +1,153 @@
+﻿<Window x:Class="EasyWpfWithFody.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:EasyWpfWithFody.Models"
+        Title="Simple Fody MVVM Example" Height="600" Width="800"
+        DataContext="{Binding CurrentJobSheet, RelativeSource={RelativeSource Mode=Self}}">
+  
+  <Window.Resources>
+    <Style TargetType="{x:Type ListBox}">
+      <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+      <Setter Property="ItemTemplate">
+        <Setter.Value>
+          <DataTemplate>
+            <Border BorderBrush="Silver" BorderThickness="1" CornerRadius="0" Margin="3">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="0.5*" />
+                  <ColumnDefinition Width="0.5*" />
+                  <ColumnDefinition Width="0.5*" />
+                  <ColumnDefinition Width="0.5*" />
+                  <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="{Binding JobTitle}"/>
+                <TextBlock Grid.Column="1" Text="{Binding ClientName}"/>
+                <TextBlock Grid.Column="2" Text="{Binding CostPerHour}"/>
+                <TextBlock Grid.Column="3" Text="{Binding NumberOfHours}"/>
+                <TextBlock Grid.Column="4" Text="{Binding TotalCost}"/>
+                
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </Setter.Value>
+      </Setter>
+      
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="ListBox">
+            <Grid Background="{TemplateBinding Background}">
+
+              <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+              </Grid.RowDefinitions>
+
+              <Grid Grid.Row="0"
+                                  HorizontalAlignment="Left"
+                                  Width="{Binding ActualWidth, ElementName=itemsPresenter}"
+                                  Height="25">
+
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="0.5*" />
+                  <ColumnDefinition Width="0.5*" />
+                  <ColumnDefinition Width="0.5*" />
+                  <ColumnDefinition Width="0.5*" />
+                  <ColumnDefinition Width="0.5*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.Resources>
+                  <Style TargetType="TextBlock">
+                    <Setter Property="FontSize" Value="15"/>
+                  </Style>
+                </Grid.Resources>
+
+                <TextBlock Grid.Column="0" Text="Job Title" />
+                <TextBlock Grid.Column="1" Text="Client Name" />
+                <TextBlock Grid.Column="2" Text="Cost per Hour" />
+                <TextBlock Grid.Column="3" Text="Number of Hours" />
+                <TextBlock Grid.Column="4" Text="TotalCost" />
+
+              </Grid>
+
+              <ScrollViewer Grid.Row="1" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}">
+                <ItemsPresenter x:Name="itemsPresenter"/>
+              </ScrollViewer>
+
+            </Grid>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+
+      <Setter Property="ItemContainerStyle">
+        <Setter.Value>
+          <Style TargetType="ListBoxItem">
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+          </Style>
+        </Setter.Value>
+      </Setter>
+      
+    </Style>
+  </Window.Resources>
+  
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="50" />
+      <RowDefinition Height="100" />
+    </Grid.RowDefinitions>
+
+    <ListBox Grid.Row="0" Background="AntiqueWhite" ItemsSource="{Binding Jobs}" />
+    
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="0.6*" />
+        <ColumnDefinition Width="0.4*" />
+        <ColumnDefinition Width="0.8*" />
+        <ColumnDefinition Width="0.4*" />
+        <ColumnDefinition Width="0.8*" />
+        <ColumnDefinition Width="0.6*" />
+      </Grid.ColumnDefinitions>
+      
+      <TextBlock Grid.Column="0" Text="Tax Rate" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" FontSize="10pt" FontWeight="Bold"/>
+      <TextBlock Grid.Column="2" Text="Total Cost (Pre Tax)" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" FontSize="10pt" FontWeight="Bold"/>
+      <TextBlock Grid.Column="4" Text="Total Cost (Post Tax) : " HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" FontSize="10pt" FontWeight="Bold" />
+
+      <TextBlock Grid.Column="1" Text="{Binding TaxRatePercentage, StringFormat=: {0}%}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" FontSize="10pt" FontWeight="Bold"/>
+      <TextBlock Grid.Column="3" Text="{Binding TotalCostBeforeTax, StringFormat=: {0:C}}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" FontSize="10pt" FontWeight="Bold"/>
+      <TextBlock Grid.Column="5" Text="{Binding TotalCostAfterTax, StringFormat=: {0:C}}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" FontSize="10pt" FontWeight="Bold"/>
+
+    </Grid>
+
+    <Grid Grid.Row="2" Background="Aquamarine">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="0.5*" />
+        <ColumnDefinition Width="0.5*" />
+        <ColumnDefinition Width="0.5*" />
+        <ColumnDefinition Width="0.5*" />
+        <ColumnDefinition Width="0.5*" />
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Grid.Row="0" Grid.Column="0" Text="Job Title :" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="15pt" />
+      <TextBlock Grid.Row="0" Grid.Column="2" Text="Client Name :" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="15pt" />
+      <TextBlock Grid.Row="1" Grid.Column="0" Text="Cost per Hour :" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="12pt" />
+      <TextBlock Grid.Row="1" Grid.Column="2" Text="Number of Hours :" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" FontSize="12pt" />
+
+      <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtJobTitle" Margin="10,10,10,10" Text="{Binding JobEntryToAdd.JobTitle}" />
+      <TextBox Grid.Row="0" Grid.Column="3" x:Name="txtClientName" Margin="10,10,10,10" Text="{Binding JobEntryToAdd.ClientName}" />
+      <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtCostPerHour" Margin="10,10,10,10" Text="{Binding JobEntryToAdd.CostPerHour}" />
+      <TextBox Grid.Row="1" Grid.Column="3" x:Name="txtNumberOfHours" Margin="10,10,10,10" Text="{Binding JobEntryToAdd.NumberOfHours}" />
+
+      <Button x:Name="btnAddNew" Grid.Row="0" Grid.Column="4" Grid.RowSpan="2" Margin="20,20,20,20" Content="Add New" FontSize="15pt" Click="BtnAddNewClick" />
+
+    </Grid>
+
+  </Grid>
+  
+</Window>
+
